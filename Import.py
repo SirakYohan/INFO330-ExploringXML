@@ -22,6 +22,9 @@ import xml.etree.ElementTree as ET
 # </pokemon>
 
 
+# correct to database
+conn = sqlite3.connect('pokemon.sqlite')
+c = conn.cursor()
 
 # Read pokemon XML file name from command-line
 # (Currently this code does nothing; your job is to fix that!)
@@ -33,3 +36,36 @@ for i, arg in enumerate(sys.argv):
     if i == 0:
         continue
 
+    # parsing files
+    tree = ET.parse(arg)
+    root = tree.getroot()
+
+    # grabbing needed information
+    pokedex = root.attrib['pokedex']
+    classification = root.attrib['classification']
+    generation = root.attrib['generation']
+    name = root.find('name').text
+    hp = root.find('hp').text
+    attack = root.find('attack').text
+    defense = root.find('defense').text
+    speed = root.find('speed').text
+    sp_attack = root.find('sp_attack').text
+    sp_defense = root.find('sp_defense').text
+    height = root.find('height/m').text
+    weight = root.find('weight/kg').text
+    abilities = ','.join([a.text for a in root.find('abilities').iter('ability')])
+
+    # check if pokemon is in database
+    c.execute("SELECT COUNT(*) FROM pokemon WHERE name=?", (name,))
+    if c.fetchone()[0] > 0:
+        print(f"{name} already exists in database")
+    else:
+        # inserting pokemon
+        c.execute("INSERT INTO pokemon VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  (pokedex, classification, generation, name, hp, attack, defense, speed,
+                   sp_attack, sp_defense, height, weight))
+        c.execute("INSERT INTO abilities VALUES (?, ?)", (name, abilities))
+
+# save changes and close conns
+conn.commit()
+conn.close()

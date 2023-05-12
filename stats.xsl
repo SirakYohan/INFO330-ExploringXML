@@ -23,17 +23,17 @@
      number of nodes that are returned by that query. -->
 <xsl:template match="/pokedex">
     Strong attackers: <xsl:value-of select="" />
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
+    <xsl:apply-templates select="count(pokemon[stats/attack > 150])" />
     Strong defenders:
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
+    <xsl:apply-templates select="pokemon[stats/attack > 150]" />
     Fast:
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
+    <xsl:apply-templates select="pokemon[stats/defense > 150]" />
 </xsl:template>
 
 <!-- In this template, select the name, pokedexNumber, and type in each of the value-of
      statements, respectively. -->
 <xsl:template match="pokemon">
-    <xsl:value-of select="XPATH-QUERY-GOES-HERE" /> (<xsl:value-of select="XPATH-QUERY-GOES-HERE" />): <xsl:apply-templates select="type" />
+    <xsl:value-of select="name" /> (<xsl:value-of select="number" />): <xsl:apply-templates select="type" />
 </xsl:template>
 
 <!--
@@ -49,33 +49,33 @@
 <!--
 <xsl:template match="/pokedex">
   <html>
-  <body>
-  <h2>Strong Attackers: <xsl:value-of select="XPATH-QUERY-GOES-HERE" /></h2>
-  <table border="1">
-    <tr bgcolor="#9acd32">
-      <th>Name</th>
-      <th>Type</th>
-    </tr>
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
-  </table>
-  <h2>Strong Defenders: <xsl:value-of select="XPATH-QUERY-GOES-HERE" /></h2>
-  <table border="1">
-    <tr bgcolor="#9acd32">
-      <th>Name</th>
-      <th>Type</th>
-    </tr>
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
-  </table>
-  <h2>Fast: <xsl:value-of select="XPATH-QUERY-GOES-HERE" /></h2>
-  <table border="1">
-    <tr bgcolor="#9acd32">
-      <th>Name</th>
-      <th>Type</th>
-    </tr>
-    <xsl:apply-templates select="XPATH-QUERY-GOES-HERE" />
-  </table>
+    <body>
+    <h2>Strong Attackers: <xsl:value-of select="count(pokemon[stats/attack > 150])" /></h2>
+    <table border="1">
+     <tr bgcolor="#9acd32">
+        <th>Name</th>
+        <th>Type</th>
+      </tr>
+      <xsl:apply-templates select="pokemon[stats/attack > 150]" />
+      </table>
+      <h2>Strong Defenders: <xsl:value-of select="count(pokemon[stats/defense > 150])" /></h2>
+      <table border="1">
+       <tr bgcolor="#9acd32">
+        <th>Name</th>
+        <th>Type</th>
+      </tr>
+      <xsl:apply-templates select="pokemon[stats/defense > 150]" />
+    </table>
+    <h2>Fast: <xsl:value-of select="count(pokemon[stats/speed > 150])" /></h2>
+    <table border="1">
+      <tr bgcolor="#9acd32">
+        <th>Name</th>
+        <th>Type</th>
+      </tr>
+      <xsl:apply-templates select="pokemon[stats/speed > 150]" />
+    </table>
   </body>
-  </html>
+</html>
 </xsl:template>
 -->
 
@@ -84,8 +84,9 @@
 <!--
 <xsl:template match="pokemon">
     <tr>
-      <td><xsl:value-of select="XPATH-QUERY-GOES-HERE" /></td>
-      <td><xsl:value-of select="XPATH-QUERY-GOES-HERE" /></td>
+      <td><xsl:value-of select="name" /></td>
+      <td><xsl:value-of select="number" /></td>
+      <td><xsl:apply-templates select="type"/></td>
     </tr>
 </xsl:template>
 -->
